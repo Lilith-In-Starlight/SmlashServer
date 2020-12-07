@@ -37,3 +37,6 @@ remote func update_player_server_pos(pos, spd, id):
 remote func player_attacks(who, damage, area):
 	attacks[attacks_ever] = [who, damage, area, 0]
 	attacks_ever += 1
+
+remote func start_game():
+	rpc("go_to_lobby")
