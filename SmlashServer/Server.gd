@@ -18,7 +18,7 @@ func _ready():
 	
 func _process(delta):
 	if deaths >= players - 1 and players > 1:
-		deaths = 0
+		rset("deaths", 0)
 		rpc("go_to_lobby")
 
 func on_entity_join(id):
@@ -49,5 +49,10 @@ remote func start_game():
 remote func damage_player(from, to, posfrom, posto, amount):
 	player_data[to]["health"] += amount
 	player_data[to]["pos"] = posto
-	player_data[to]["speed"] = (posto-(posfrom + Vector2.DOWN * 5)).normalized()*(((player_data[to]["health"]/100.0)*3000) + 300 + (amount * 25))
+	player_data[to]["cspeed"] = ((posto-(posfrom + Vector2.DOWN * 5)).normalized()*(((player_data[to]["health"]/100.0)*3000) + 300 + (amount * 25))).length()
+	player_data[to]["vspeed"] = (posto-(posfrom + Vector2.DOWN * 5)).normalized()*(((player_data[to]["health"]/100.0)*3000) + 300 + (amount * 25))
 	rpc_unreliable("update_player_data_ingame", player_data, to)
+
+remote func update_player_health(id, new_health):
+	player_data[id]["health"] = new_health
+	rpc("update_player_data", player_data)
