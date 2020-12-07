@@ -45,3 +45,9 @@ remote func player_attacks(who, damage, area):
 
 remote func start_game():
 	rpc("go_to_stage")
+
+func damage_player(from, to, posfrom, posto, amount):
+	player_data[to]["health"] += amount
+	player_data[to]["pos"] = posto
+	player_data[to]["speed"] = (posto-(posfrom + Vector2.DOWN * 5)).normalized()*(((player_data[to]["health"]/100.0)*3000) + 300 + (amount * 25))
+	rpc("update_player_data_ingame", player_data, to)
