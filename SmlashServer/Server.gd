@@ -19,6 +19,7 @@ func _ready():
 func _process(delta):
 	if deaths >= players - 1 and players > 1:
 		deaths = 0
+		rpc("go_to_lobby")
 
 func on_entity_join(id):
 	print("Player joined with id: " + str(id))
@@ -43,4 +44,4 @@ remote func player_attacks(who, damage, area):
 	attacks_ever += 1
 
 remote func start_game():
-	rpc("go_to_lobby")
+	rpc("go_to_stage")
