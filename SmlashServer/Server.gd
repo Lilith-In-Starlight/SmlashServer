@@ -1,20 +1,24 @@
 extends Node
 
-var host := false
 remotesync var players := 0
+remotesync var deaths := 0
+
 var local_id := -1
 var attacks := {}
 var attacks_ever := 0
 var player_data := {}
 
 func _ready():
-	host = true
 	var peer := NetworkedMultiplayerENet.new()
 	peer.create_server(5555, 8)
 	get_tree().network_peer = peer
 	local_id = -1
 	get_tree().connect("network_peer_connected", self, "on_entity_join")
 	get_tree().connect("network_peer_disconnected", self, "on_entity_leave")
+	
+func _process(delta):
+	if deaths >= players - 1 and players > 1:
+		deaths = 0
 
 func on_entity_join(id):
 	print("Player joined with id: " + str(id))
