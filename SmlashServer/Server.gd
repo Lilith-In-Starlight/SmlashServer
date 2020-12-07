@@ -21,6 +21,7 @@ func on_entity_join(id):
 
 func on_entity_leave(id):
 	print("Player left with id: " + str(id))
+	rset("players", players - 1)
 
 remote func register_player(local):
 	rset("players", players + 1)
