@@ -48,9 +48,7 @@ remote func start_game():
 
 remote func damage_player(from, to, posfrom, posto, amount):
 	player_data[to]["health"] += amount
-	player_data[to]["pos"] = posto
-	player_data[to]["cspeed"] = ((posto-(posfrom + Vector2.DOWN * 5)).normalized()*(((player_data[to]["health"]/100.0)*3000) + 300 + (amount * 25))).length()
-	player_data[to]["vspeed"] = (posto-(posfrom + Vector2.DOWN * 5)).normalized()*(((player_data[to]["health"]/100.0)*3000) + 300 + (amount * 25))
+	rpc_unreliable("player_was_attacked", from, to, posfrom, posto, amount)
 	rpc_unreliable("update_player_data_ingame", player_data, to)
 
 remote func update_player_health(id, new_health):
